@@ -1,0 +1,134 @@
+<!-- weather.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Information</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background:#4ea699;
+            color: #000000;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .weather-card, .support-card {
+            background: rgba(199, 247, 243, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            color: #333;
+        }
+        h1, h2, h3 {
+            font-weight: 600;
+        }
+        .nav-buttons {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .nav-buttons .btn {
+            margin: 0 10px;
+        }
+        .btn-home {
+            background-color:  #37485e; /* Green */
+            border-color:  #37485e; /* Green */
+            color: #fff;
+        }
+        .btn-support {
+            background-color: #37485e; /* Red */
+            border-color: #37485e; /* Red */
+            color: #fff;
+        }
+        .btn-refresh {
+            background-color:  #627c85; 
+            border-color: #627c85; 
+            color: #fff;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 text-center">
+                <h1>MIT MYSORE</h1>
+                <h2>Department Of CSE</h2>
+            </div>
+        </div>
+        <div class="row justify-content-center nav-buttons">
+            <div class="col-md-8 text-center">
+                <button class="btn btn-home" onclick="showSection('home')">Home</button>
+                <button class="btn btn-support" onclick="showSection('support')">Support</button>
+            </div>
+        </div>
+        <div id="home" class="row justify-content-center section">
+            <div class="col-md-6">
+                <div class="weather-card">
+                    <h3 class="text-center" style="color: #000000;">Weather Information</h3>
+                    <form id="weatherForm" method="post" class="my-4">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="country"><h4>Enter Country:</h4></label>
+                            <input type="text" id="country" name="country" class="form-control" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block " style=" background-color:  #627c85; 
+                        border-color: #627c85; 
+                        color: #ffffff;">Get Weather</button>
+                        <button type="button" class="btn btn-primary btn-block btn-refresh" onclick="refreshWeather()">Refresh</button>
+                    </form>
+                    {% if weather_data %}
+                        <div class="text-center">
+                            <h4>Weather in {{ weather_data.location }}</h4>
+                            <p>Temperature: {{ weather_data.temperature }}°C</p>
+                            <p>Condition: {{ weather_data.condition }}</p>
+                            <p>Humidity: {{ weather_data.humidity }}%</p>
+                            <p>Wind Speed: {{ weather_data.wind_speed }}</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div id="support" class="row justify-content-center section hidden">
+            <div class="col-md-6">
+                <div class="support-card">
+                    <h3 class="text-center">Support Information</h3>
+                    <p><strong>Name : </strong>Deepak Gowda K G </p>
+                  
+                    <p class="text-center">For any support or queries, please contact us at:</p>
+                    <ul>
+                        <li>Email: <a href="mailto:deepakgowda747@gmail.com">deepakgowda747@gmail.com</a></li>
+                       
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            // Hide all sections
+            var sections = document.querySelectorAll('.section');
+            sections.forEach(function(section) {
+                section.classList.add('hidden');
+            });
+
+            // Show selected section
+            var selectedSection = document.getElementById(sectionId);
+            if (selectedSection) {
+                selectedSection.classList.remove('hidden');
+            }
+        }
+
+        function refreshWeather() {
+            document.getElementById('weatherForm').submit();
+        }
+    </script>
+</body>
+</html>
